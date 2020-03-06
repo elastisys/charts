@@ -1,3 +1,14 @@
+elastisys_custom:
+  ## The following values must be set in order to use the chart.
+  # influx_addr:
+  # s3_region:
+  # s3_region_endpoint:
+  # s3_influx_bucket_name:
+  # s3_access_key:
+  # s3_secret_key:
+  # influxdb_user:
+  # influxdb_password:
+
 ## influxdb image version
 ## ref: https://hub.docker.com/r/library/influxdb/tags/
 image:

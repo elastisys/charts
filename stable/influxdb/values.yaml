@@ -8,6 +8,40 @@ elastisys_custom:
   # s3_secret_key:
   # influxdb_user:
   # influxdb_password:
+  backup:
+    schedule: "0 0 * * *"
+    # Resources for the init container that does the `influx backup`
+    init_resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 250m
+        memory: 500Mi
+    # Resources for the container that uploads the backup to S3
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 250m
+        memory: 300Mi
+  metrics:
+    # The schedule for running the metrics exporter.
+    # Every 5th minute from 0 through 59 (one minute ahead of the retention cronjob)
+    schedule: "0-59/5 * * * *"
+  retention:
+    # The schedule for running the retention script.
+    # Every 5th minute from 1 through 59 (one minute after the metrics exporter)
+    schedule: "1-59/5 * * * *"
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 250m
+        memory: 500Mi
+
 
 ## influxdb image version
 ## ref: https://hub.docker.com/r/library/influxdb/tags/

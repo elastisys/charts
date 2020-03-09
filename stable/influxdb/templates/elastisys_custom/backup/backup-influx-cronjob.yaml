@@ -5,8 +5,7 @@ metadata:
   labels:
     app: influxdb-backup
 spec:
-  # TODO: find a better way to configure the schedule (helm values?)
-  schedule: "0 0 * * *"
+  schedule: {{ .Values.elastisys_custom.backup.schedule | quote }}
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -37,13 +36,7 @@ spec:
                 configMapKeyRef:
                   name: influx-env-cm
                   key: INFLUX_ADDR
-            resources:
-              requests:
-                cpu: 50m
-                memory: 100Mi
-              limits:
-                cpu: 250m
-                memory: 500Mi
+            resources: {{ toYaml .Values.elastisys_custom.backup.init_resources | nindent 14 }}
           containers:
           - name: aws-cli-util
             image: atlassian/pipelines-awscli:1.16.185
@@ -84,10 +77,4 @@ spec:
             volumeMounts:
             - name: backups
               mountPath: /backups
-            resources:
-              requests:
-                cpu: 50m
-                memory: 100Mi
-              limits:
-                cpu: 250m
-                memory: 300Mi
+            resources: {{ toYaml .Values.elastisys_custom.backup.init_resources | nindent 14 }}

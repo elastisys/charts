@@ -5,7 +5,7 @@ metadata:
   labels:
     app: influxdb-metrics-retention
 spec:
-  schedule: "1-59/5 * * * *" # At every 5th minute from 1 through 59 (one minute after du monitoring defined in influxdb/cronjob-cm.yaml)
+  schedule: {{ .Values.elastisys_custom.metrics.schedule | quote }}
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -61,10 +61,4 @@ spec:
               volumeMounts:
                 - name: python-script
                   mountPath: /app
-              resources:
-                requests:
-                  cpu: 50m
-                  memory: 100Mi
-                limits:
-                  cpu: 250m
-                  memory: 500Mi            
+              resources: {{ toYaml .Values.elastisys_custom.retention.resources | nindent 16 }}
